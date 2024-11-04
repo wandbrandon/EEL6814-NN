@@ -1,0 +1,59 @@
+// Computational graph for the feedforward sweep
+digraph CNN {
+	graph [label=<<B>CNN</B><br align='left'/>12 tensors total (122.0 KB)<br align='left'/>171158 params total (669.6 KB)<br align='left'/>> labeljust=left labelloc=t ordering=out rankdir=TB]
+	node [ordering=out]
+	input_1 [label=<<b>input_1</b><br/>1x1x28x28 (3.2 KB)<br/>@input.x> color=black fillcolor="#98FB98" fontcolor=black ordering=out shape=oval style="filled,solid"]
+	input_1 -> conv2d_1_1 [arrowsize=.7 color=black fontcolor=black labelfontsize=8 style=solid]
+	conv2d_1_1 [label=<<b>conv2d_1_1</b><br/>1x16x28x28 (49.2 KB)<br/>params: 16x1x5x5, x16<br/>@conv1> color=black fillcolor="#E6E6E6" fontcolor=black ordering=out shape=box style="filled,solid"]
+	conv2d_1_1 -> maxpool2d_1_2 [arrowsize=.7 color=black fontcolor=black labelfontsize=8 style=solid]
+	maxpool2d_1_2 [label=<<b>maxpool2d_1_2</b><br/>1x16x14x14 (12.4 KB)<br/>@pool:1> color=black fillcolor=white fontcolor=black ordering=out shape=box style="filled,solid"]
+	maxpool2d_1_2 -> relu_1_3 [arrowsize=.7 color=black fontcolor=black labelfontsize=8 style=solid]
+	relu_1_3 [label=<<b>relu_1_3</b><br/>1x16x14x14 (12.4 KB)<br/>@relu:1> color=black fillcolor=white fontcolor=black ordering=out shape=box style="filled,solid"]
+	relu_1_3 -> conv2d_2_4 [arrowsize=.7 color=black fontcolor=black labelfontsize=8 style=solid]
+	conv2d_2_4 [label=<<b>conv2d_2_4</b><br/>1x32x14x14 (24.7 KB)<br/>params: 32x16x5x5, x32<br/>@conv2> color=black fillcolor="#E6E6E6" fontcolor=black ordering=out shape=box style="filled,solid"]
+	conv2d_2_4 -> maxpool2d_2_5 [arrowsize=.7 color=black fontcolor=black labelfontsize=8 style=solid]
+	maxpool2d_2_5 [label=<<b>maxpool2d_2_5</b><br/>1x32x7x7 (6.3 KB)<br/>@pool:2> color=black fillcolor=white fontcolor=black ordering=out shape=box style="filled,solid"]
+	maxpool2d_2_5 -> relu_2_6 [arrowsize=.7 color=black fontcolor=black labelfontsize=8 style=solid]
+	relu_2_6 [label=<<b>relu_2_6</b><br/>1x32x7x7 (6.3 KB)<br/>@relu:2> color=black fillcolor=white fontcolor=black ordering=out shape=box style="filled,solid"]
+	relu_2_6 -> view_1_7 [arrowsize=.7 color=black fontcolor=black labelfontsize=8 style=solid]
+	view_1_7 [label=<<b>view_1_7</b><br/>1x1568 (6.2 KB)> color=black fillcolor=white fontcolor=black ordering=out shape=oval style="filled,solid"]
+	view_1_7 -> linear_1_8 [arrowsize=.7 color=black fontcolor=black labelfontsize=8 style=solid]
+	linear_1_8 [label=<<b>linear_1_8</b><br/>1x100 (528 B)<br/>params: 100x1568, x100<br/>@fc1> color=black fillcolor="#E6E6E6" fontcolor=black ordering=out shape=box style="filled,solid"]
+	linear_1_8 -> relu_3_9 [arrowsize=.7 color=black fontcolor=black labelfontsize=8 style=solid]
+	relu_3_9 [label=<<b>relu_3_9</b><br/>1x100 (528 B)<br/>@relu:3> color=black fillcolor=white fontcolor=black ordering=out shape=box style="filled,solid"]
+	relu_3_9 -> linear_2_10 [arrowsize=.7 color=black fontcolor=black labelfontsize=8 style=solid]
+	linear_2_10 [label=<<b>linear_2_10</b><br/>1x10 (168 B)<br/>params: 10x100, x10<br/>@fc2> color=black fillcolor="#E6E6E6" fontcolor=black ordering=out shape=box style="filled,solid"]
+	linear_2_10 -> output_1 [arrowsize=.7 color=black fontcolor=black labelfontsize=8 style=solid]
+	output_1 [label=<<b>output_1</b><br/>1x10 (168 B)<br/>@output> color=black fillcolor="#ff9999" fontcolor=black ordering=out shape=oval style="filled,solid"]
+	{
+		rank=sink
+		output_1
+	}
+	subgraph cluster_conv1_pass1 {
+		fillcolor=white label=<<B>@conv1</B><br align='left'/>(Conv2d)<br align='left'/>> labelloc=b penwidth=5.0 style="filled,dashed"
+	}
+	subgraph cluster_pool_pass1 {
+		fillcolor=white label=<<B>@pool:1</B><br align='left'/>(MaxPool2d)<br align='left'/>> labelloc=b penwidth=5.0 style="filled,dashed"
+	}
+	subgraph cluster_relu_pass1 {
+		fillcolor=white label=<<B>@relu:1</B><br align='left'/>(ReLU)<br align='left'/>> labelloc=b penwidth=5.0 style="filled,dashed"
+	}
+	subgraph cluster_conv2_pass1 {
+		fillcolor=white label=<<B>@conv2</B><br align='left'/>(Conv2d)<br align='left'/>> labelloc=b penwidth=5.0 style="filled,dashed"
+	}
+	subgraph cluster_pool_pass2 {
+		fillcolor=white label=<<B>@pool:2</B><br align='left'/>(MaxPool2d)<br align='left'/>> labelloc=b penwidth=5.0 style="filled,dashed"
+	}
+	subgraph cluster_relu_pass2 {
+		fillcolor=white label=<<B>@relu:2</B><br align='left'/>(ReLU)<br align='left'/>> labelloc=b penwidth=5.0 style="filled,dashed"
+	}
+	subgraph cluster_fc1_pass1 {
+		fillcolor=white label=<<B>@fc1</B><br align='left'/>(Linear)<br align='left'/>> labelloc=b penwidth=5.0 style="filled,dashed"
+	}
+	subgraph cluster_relu_pass3 {
+		fillcolor=white label=<<B>@relu:3</B><br align='left'/>(ReLU)<br align='left'/>> labelloc=b penwidth=5.0 style="filled,dashed"
+	}
+	subgraph cluster_fc2_pass1 {
+		fillcolor=white label=<<B>@fc2</B><br align='left'/>(Linear)<br align='left'/>> labelloc=b penwidth=5.0 style="filled,dashed"
+	}
+}

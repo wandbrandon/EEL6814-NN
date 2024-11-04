@@ -21,6 +21,8 @@ keras = "^3.6.0"
 torchvision = "^0.20.0"
 pydot = "^3.0.2"
 graphviz = "^0.20.3"
+torchlens = "^0.1.23"
+imageio = "^2.36.0"
 
 
 [build-system]
